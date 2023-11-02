@@ -1,8 +1,6 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useContext, useEffect, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
-import { AppContext } from "../../Container/App";
-import { Apptype } from "../../Interfaces/interfaces";
 import { auth } from "../../Firebase";
 import { HomeContext } from "./Home";
 import { HomeType } from "../../Interfaces/interfaces";
@@ -26,7 +24,8 @@ import { GrCheckmark } from "react-icons/gr";
 import { ShowModal } from "../Pages/Modal";
 import { BsArrowRight } from "react-icons/bs";
 import { TbLock, TbMail } from "react-icons/tb";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { loguser } from "../../LoginSlice";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -38,7 +37,11 @@ function Login() {
   const login = useContext<HomeType | null>(HomeContext);
   const [mail, setmail] = useState<HTMLInputElement>();
   const [pass, setpass] = useState<HTMLInputElement>();
-  const Login = useContext<Apptype | null>(AppContext);
+  // const loguser = require("../../LoginSlice");
+  const dispatch = useDispatch();
+  const logusers = () => {
+    dispatch(loguser());
+  };
 
   useEffect(() => {
     setpass(document.getElementById("pass-ref") as HTMLInputElement);
@@ -67,7 +70,7 @@ function Login() {
     setLoaded(false);
     if (mail?.value && pass?.value) {
       signInWithEmailAndPassword(auth, mail.value, pass.value);
-      Login!.setisloggedin(true);
+      logusers();
       navigate("/dashBoard", {
         state: {
           data: {

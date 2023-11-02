@@ -45,7 +45,6 @@ export type navtype = {
 export type Apptype = {
   showPreloader: () => void;
   isloggedin: boolean;
-  setisloggedin: (b: boolean) => void;
   theme: string;
   toggleTheme: () => void;
 };

@@ -93,7 +93,9 @@ function Main(props: Props) {
             </div>
             <div className="w-1/2 time p-3 bg-white">
               <div className=" flex-col">
-                <span className="text-4xl font-bold">{d.getHours()} </span>
+                <span className="text-4xl font-bold">
+                  {d.getHours() < 12 ? d.getHours() : d.getHours() - 12}{" "}
+                </span>
                 <span>
                   {d.getMinutes() < 10 && "0"}
                   {d.getMinutes()} {d.getHours() > 11 ? "PM" : "AM"}
@@ -105,9 +107,7 @@ function Main(props: Props) {
 
           <div>
             <div className="flex dashflex flex-col flex-wrap sm:flex-row">
-              <Tabs title="My Balance" content={`100`} balance />
-
-              <Tabs title="Status" content={"Active"} />
+              <Tabs title="Pending Visitors" content={"3"} />
               <Tabs title="Active rate" content={"10%"} color="red" />
               <Tabs title="Avg Click Rate" content={"30%"} />
             </div>

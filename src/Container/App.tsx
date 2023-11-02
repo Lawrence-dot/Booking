@@ -4,18 +4,14 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Dasboard from "../Components/Pages/Dasboard";
 import Home from "../Components/Auth/Home";
 import { Apptype } from "../Interfaces/interfaces";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useSelector } from "react-redux";
+import { RootState } from "../Store";
 
 export const AppContext = createContext<Apptype | null>(null);
 
 function App() {
   const [theme, setTheme] = useState(window.localStorage.theme);
-  const [isloggedin, setisloggedin] = useState<boolean>(false);
-  const auth = getAuth();
-
-  onAuthStateChanged(auth, (user) => {
-    user ? setisloggedin(true) : setisloggedin(false);
-  });
+  const isloggedin = useSelector((state: RootState) => state.login.value);
 
   const showPreloader = () => {
     document.querySelector(".preloader")?.classList.remove("hidden");
@@ -46,7 +42,7 @@ function App() {
 
   return (
     <AppContext.Provider
-      value={{ showPreloader, isloggedin, setisloggedin, theme, toggleTheme }}
+      value={{ showPreloader, isloggedin, theme, toggleTheme }}
     >
       <div className="App" id="app">
         <div className="modalwrapper"></div>

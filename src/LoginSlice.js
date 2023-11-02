@@ -8,7 +8,7 @@ export const loginSlice = createSlice({
   name: 'login',
   initialState,
   reducers: {
-    login: (state) => {
+    loguser: (state) => {
       state.value = true;
     },
     logout: (state) => {
@@ -18,6 +18,6 @@ export const loginSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { login, logout } = counterSlice.actions
+export const { loguser, logout } = loginSlice.actions
 
 export default loginSlice.reducer

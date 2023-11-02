@@ -13,6 +13,8 @@ import {
   Person,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { logout } from "../../LoginSlice";
 
 export const classNames: string[] = ["bookings", "dashboard", "withdraw"];
 
@@ -29,6 +31,7 @@ function Navbar(props: Props) {
 
   const Login = useContext<Apptype | null>(AppContext);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const switchNav = (id: string) => {
     const docs: Element[] = Array.from(
@@ -56,6 +59,7 @@ function Navbar(props: Props) {
       title: "Are you sure you want to logout ?",
       type: "yesno",
       function: () => {
+        dispatch(logout());
         navigate("/");
       },
     });
