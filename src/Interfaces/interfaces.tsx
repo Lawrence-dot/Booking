@@ -1,10 +1,7 @@
 export interface dataType {
-  Email: string;
-  Tel: number;
-  Username: string;
-  Balance: number;
-  Bank?: account[];
-  Type?: string;
+  email: string;
+  token: string;
+  user_id: string;
 }
 
 export interface account {

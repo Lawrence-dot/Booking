@@ -25,7 +25,6 @@ function Trans(props: Props) {
         <div className="rjct">
           <button> Reject </button>
         </div>
-        <div className="trf">{dats.Username}</div>
       </div>
     </div>
   );

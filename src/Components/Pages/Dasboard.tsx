@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useEffect } from "react";
 import { useLocation } from "react-router";
 import { dataType } from "../../Interfaces/interfaces";
 import { useState } from "react";
@@ -11,11 +11,14 @@ import { BsBellFill } from "react-icons/bs";
 export const navContext = createContext<navtype | null>(null);
 
 function Dasboard() {
-  const [datas] = useState<dataType>();
+  const location = useLocation();
+  const [datas, setdatas] = useState<dataType>();
   const [open, setOpen] = useState<boolean>(false);
   const maincontext = useContext<mainType | null>(MainContext);
 
-  const location = useLocation();
+  useEffect(() => {
+    setdatas(location.state.datas);
+  }, [location.state.datas]);
 
   return (
     <navContext.Provider
@@ -28,8 +31,9 @@ function Dasboard() {
         <div className="navs w-60 md:w-72">
           <Navbar
             Pending={maincontext?.pendingtrans}
-            datas={datas as dataType}
-            type={location.state.data.Type}
+            datas={location.state.data}
+            type="security"
+            admin={true}
           />
         </div>
 

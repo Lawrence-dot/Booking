@@ -24,20 +24,23 @@ function Bookings() {
     },
   ]);
 
-  const editbooking = () => {
+  const editbooking = (id?: string) => {
     document.getElementById("editbooking")?.classList.toggle("hidden");
   };
 
   return (
     <div
-      className="contentmain dark:bg-blk transition-all rounded-d"
+      className="contentmain hidden dark:bg-blk transition-all rounded-d"
       id="bookings"
     >
-      <h2 className="mb-5 font-bold"> Bookings </h2>
-
       <div className="editbookings hidden" id="editbooking">
         <div className="editcontent py-3 px-4">
-          <span className="w-8 block font-bold text-red-700 ml-auto">X</span>
+          <span
+            className="w-8 block font-bold text-red-700 ml-auto"
+            onClick={() => editbooking()}
+          >
+            X
+          </span>
           <h2 className="text-xl font-bold rounded-md mb-3 text-blue-700">
             {" "}
             Edit Booking{" "}
@@ -61,38 +64,41 @@ function Bookings() {
         </div>
       </div>
 
-      <table className="visitor">
-        <thead>
-          <th>S/N</th>
-          <th>Visitors Name</th>
-          <th>Booking Date </th>
-          <th>Booking Time</th>
-          <th></th>
-        </thead>
-        <tbody>
-          {bookings.map((each, index) => {
-            return (
-              <tr className="guesttd" key={index}>
-                <td className="mr-1"> {index + 1} </td>
-                <td> {each.visitorname} </td>
-                <td> {each.bookingdate} </td>
-                <td> {each.bookingtime} </td>
-                <td>
-                  {" "}
-                  <span onClick={editbooking}>
+      <div className="tablediv">
+        <h2 className="mb-5 font-bold"> Bookings </h2>
+        <table className="visitor">
+          <thead>
+            <td>S/N</td>
+            <td>Visitors Name</td>
+            <td>Booking Date </td>
+            <td>Booking Time</td>
+            <td></td>
+          </thead>
+          <tbody>
+            {bookings.map((each, index) => {
+              return (
+                <tr className="guesttd" key={index}>
+                  <td className="mr-1"> {index + 1} </td>
+                  <td> {each.visitorname} </td>
+                  <td> {each.bookingdate} </td>
+                  <td> {each.bookingtime} </td>
+                  <td>
                     {" "}
-                    <Edit id={each.id} className="mr-2 text-blue-700" />
-                  </span>
-                  <span>
-                    {" "}
-                    <Delete className="ml-auto text-red-700" />
-                  </span>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                    <span onClick={() => editbooking(each.id)}>
+                      {" "}
+                      <Edit id={each.id} className="mr-2 text-blue-700" />
+                    </span>
+                    <span>
+                      {" "}
+                      <Delete className="ml-auto text-red-700" />
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

@@ -1,12 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import { HomeContext } from "./Home";
-import { dataType, HomeType } from "../../Interfaces/interfaces";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import { setDoc, doc } from "firebase/firestore";
-import { db } from "../../Firebase";
-import { AppContext } from "../../Container/App";
-import { Apptype } from "../../Interfaces/interfaces";
-import { ShowModal } from "../Pages/Modal";
+import React, { useState } from "react";
 import {
   FormControl,
   InputLabel,
@@ -18,31 +10,12 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 function Register() {
-  const login = useContext<HomeType | null>(HomeContext);
-  const loader = useContext<Apptype | null>(AppContext);
   const [error, seterror] = useState(false);
-  const [mailref, setmailref] = useState<HTMLInputElement>();
-  const [passref, setpassref] = useState<HTMLInputElement>();
-  const [nameref, setnameref] = useState<HTMLInputElement>();
-  const [phoneref, setphoneref] = useState<HTMLInputElement>();
-  const [confirmref, setconfirmref] = useState<HTMLInputElement>();
 
-  useEffect(() => {
-    setmailref(document.getElementById("mailref") as HTMLInputElement);
-    setpassref(document.getElementById("passref") as HTMLInputElement);
-    setnameref(document.getElementById("regnameref") as HTMLInputElement);
-    setphoneref(document.getElementById("phoneref") as HTMLInputElement);
-    setconfirmref(document.getElementById("confirmref") as HTMLInputElement);
-  }, []);
-
-  const [Loading, setLoading] = useState<boolean>(false);
+  const [Loading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const loginpage = () => {
-    login?.setlogin(true);
-  };
 
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -50,87 +23,86 @@ function Register() {
     event.preventDefault();
   };
 
-  const register = () => {
-    const auth = getAuth();
-    if (
-      mailref!.value.endsWith(".com") &&
-      nameref!.value &&
-      passref!.value.length >= 6 &&
-      phoneref!.value.length === 11 &&
-      passref!.value === confirmref!.value
-    ) {
-      const info: dataType = {
-        Username: nameref!.value,
-        Tel: Number(phoneref!.value),
-        Balance: 0,
-        Email: mailref!.value,
-        Type: "User",
-      };
-      setLoading(true);
-      try {
-        createUserWithEmailAndPassword(auth, mailref!.value, passref!.value)
-          .then(() => {
-            setDoc(
-              doc(
-                db,
-                "Users",
-                `${mailref!.value.substring(0, mailref!.value.length - 10)}`
-              ),
-              info
-            )
-              .then(() => {
-                ShowModal({
-                  title: "User Created Succesfully",
-                  type: "ok",
-                });
-                loader?.showPreloader();
-                loginpage();
-              })
-              .finally(() => {
-                setLoading(false);
-              });
-          })
-          .catch((err) => {
-            setLoading(false);
-            if (
-              err.message === "Firebase: Error (auth/email-already-in-use)."
-            ) {
-              alert("User Exists");
-            } else {
-              alert(err.message);
-            }
-          });
-      } catch (error) {
-        alert(error);
-      }
-    } else if (passref!.value.length < 6) {
-      ShowModal({
-        title: "Password Must be minimum of 6 characters",
-        type: "ok",
-      });
-    } else if (passref!.value !== confirmref!.value) {
-      ShowModal({
-        title: "Password Mismatch",
-        type: "ok",
-      });
-    } else if (!mailref!.value.endsWith(".com")) {
-      ShowModal({
-        title: "Enter a valid mail",
-        type: "ok",
-      });
-    } else if (phoneref!.value.length !== 11) {
-      ShowModal({
-        title: "Enter a valid phone number",
-        type: "ok",
-      });
-    } else {
-      seterror(true);
-      ShowModal({
-        title: "Password Fill all blank fields correctly",
-        type: "ok",
-      });
-    }
-  };
+  // const register = () => {
+  //   const auth = getAuth();
+  //   if (
+  //     mailref!.value.endsWith(".com") &&
+  //     nameref!.value &&
+  //     passref!.value.length >= 6 &&
+  //     phoneref!.value.length === 11 &&
+  //     passref!.value === confirmref!.value
+  //   ) {
+  //     const info: dataType = {
+  //       Tel: Number(phoneref!.value),
+  //       Balance: 0,
+  //       Email: mailref!.value,
+  //       Type: "User",
+  //     };
+  //     setLoading(true);
+  //     try {
+  //       createUserWithEmailAndPassword(auth, mailref!.value, passref!.value)
+  //         .then(() => {
+  //           setDoc(
+  //             doc(
+  //               db,
+  //               "Users",
+  //               `${mailref!.value.substring(0, mailref!.value.length - 10)}`
+  //             ),
+  //             info
+  //           )
+  //             .then(() => {
+  //               ShowModal({
+  //                 title: "User Created Succesfully",
+  //                 type: "ok",
+  //               });
+  //               loader?.showPreloader();
+  //               loginpage();
+  //             })
+  //             .finally(() => {
+  //               setLoading(false);
+  //             });
+  //         })
+  //         .catch((err) => {
+  //           setLoading(false);
+  //           if (
+  //             err.message === "Firebase: Error (auth/email-already-in-use)."
+  //           ) {
+  //             alert("User Exists");
+  //           } else {
+  //             alert(err.message);
+  //           }
+  //         });
+  //     } catch (error) {
+  //       alert(error);
+  //     }
+  //   } else if (passref!.value.length < 6) {
+  //     ShowModal({
+  //       title: "Password Must be minimum of 6 characters",
+  //       type: "ok",
+  //     });
+  //   } else if (passref!.value !== confirmref!.value) {
+  //     ShowModal({
+  //       title: "Password Mismatch",
+  //       type: "ok",
+  //     });
+  //   } else if (!mailref!.value.endsWith(".com")) {
+  //     ShowModal({
+  //       title: "Enter a valid mail",
+  //       type: "ok",
+  //     });
+  //   } else if (phoneref!.value.length !== 11) {
+  //     ShowModal({
+  //       title: "Enter a valid phone number",
+  //       type: "ok",
+  //     });
+  //   } else {
+  //     seterror(true);
+  //     ShowModal({
+  //       title: "Password Fill all blank fields correctly",
+  //       type: "ok",
+  //     });
+  //   }
+  // };
 
   return (
     <div className="register">
@@ -235,10 +207,7 @@ function Register() {
           </FormControl>
         </div>
 
-        <button
-          onClick={register}
-          className="bg-black signinbtn rounded-md mb-3 text-sm text-white py-2 transition-all hover:bg-white border-2 hover:text-black border-black"
-        >
+        <button className="bg-black signinbtn rounded-md mb-3 text-sm text-white py-2 transition-all hover:bg-white border-2 hover:text-black border-black">
           {Loading ? (
             <div role="status">
               <svg

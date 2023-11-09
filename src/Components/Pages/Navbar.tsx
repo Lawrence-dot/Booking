@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useEffect } from "react";
 import { bartype, dataType, navtype } from "../../Interfaces/interfaces";
 import { AppContext } from "../../Container/App";
 import { Apptype } from "../../Interfaces/interfaces";
@@ -11,6 +11,7 @@ import {
   Logout,
   Settings,
   Person,
+  Person2,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
@@ -19,9 +20,10 @@ import { logout } from "../../LoginSlice";
 export const classNames: string[] = ["bookings", "dashboard", "withdraw"];
 
 interface Props {
-  type: string;
+  type: "security" | "user";
   datas: dataType;
   Pending?: Number;
+  admin?: boolean;
 }
 
 export const NavbarContext = createContext<bartype | null>(null);
@@ -53,6 +55,10 @@ function Navbar(props: Props) {
     });
     window.innerWidth < 640 && navcontext?.setOpen(false);
   };
+
+  useEffect(() => {
+    console.log(props);
+  });
 
   const signout = () => {
     ShowModal({
@@ -101,7 +107,7 @@ function Navbar(props: Props) {
             <h3>Menu</h3>
           </div>
 
-          <div className="navli text-black dark:text-white mt-2 text-white">
+          <div className="text-black dark:text-white mt-2 text-white">
             <div className="flex flex-col">
               <div
                 id="dashboard"
@@ -114,16 +120,44 @@ function Navbar(props: Props) {
                 <span className="ml-3  navtext"> My Dashboard</span>
               </div>
 
-              <div
-                id="bookings"
-                onClick={() => switchNav("bookings")}
-                className="navli text-black dark:text-white  cursor-pointer hover:border-white  py-2  text-md font-thin font-sans rounded-md flex"
-              >
-                <span>
-                  <Person />
-                </span>
-                <span className="ml-3  navtext"> Check Bookings </span>
-              </div>
+              {props.type === "user" && (
+                <div
+                  id="bookings"
+                  onClick={() => switchNav("bookings")}
+                  className="navli text-black dark:text-white  cursor-pointer hover:border-white  py-2  text-md font-thin font-sans rounded-md flex"
+                >
+                  <span>
+                    <Person />
+                  </span>
+                  <span className="ml-3  navtext"> Check Bookings </span>
+                </div>
+              )}
+
+              {props.admin && (
+                <div
+                  id="users"
+                  onClick={() => switchNav("users")}
+                  className="navli text-black dark:text-white  cursor-pointer hover:border-white  py-2  text-md font-thin font-sans rounded-md flex"
+                >
+                  <span>
+                    <Person2 />
+                  </span>
+                  <span className="ml-3  navtext"> View Users </span>
+                </div>
+              )}
+
+              {props.type === "security" && (
+                <div
+                  id="logs"
+                  onClick={() => switchNav("logs")}
+                  className="navli text-black dark:text-white  cursor-pointer hover:border-white  py-2  text-md font-thin font-sans rounded-md flex"
+                >
+                  <span>
+                    <AutoAwesomeMosaic />
+                  </span>
+                  <span className="ml-3  navtext"> View Logs</span>
+                </div>
+              )}
             </div>
           </div>
 

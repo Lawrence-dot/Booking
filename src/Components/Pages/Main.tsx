@@ -3,6 +3,8 @@ import { dataType, history } from "../../Interfaces/interfaces";
 
 import Tabs from "../Pages/Tabs";
 import Bookings from "../Sections/Bookings";
+import Logs from "../Sections/Logs";
+import Users from "../Sections/Users";
 
 interface Props {
   datas: dataType;
@@ -75,10 +77,7 @@ function Main(props: Props) {
           id="dashboard"
         >
           <div className="welcome my-3">
-            <p className="dark:text-white">
-              {" "}
-              Good {getdateinfo()} {props?.datas?.Username}!!!{" "}
-            </p>
+            <p className="dark:text-white"> Good {getdateinfo()} !!! </p>
           </div>
 
           <div className="flex datetime my-3">
@@ -115,6 +114,10 @@ function Main(props: Props) {
         </div>
 
         <Bookings />
+
+        <Logs />
+
+        <Users />
       </div>
     </MainContext.Provider>
   );
