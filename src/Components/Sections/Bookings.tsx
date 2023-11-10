@@ -50,6 +50,33 @@ function Bookings() {
     document.getElementById("editbooking")?.classList.toggle("hidden");
   };
 
+  const createbooking = () => {
+    (async () => {
+      await axios({
+        method: "post",
+        url: "https://vistor-booking.onrender.com/api/list-create-booking/",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
+          visitor_name: "Hiyu",
+          booking_time: "3:00pm",
+          booking_date: "2023-04-20",
+          gender: "Male",
+          contact: "09063637373",
+          address: "o5jho5khm5",
+          reason: "to eat",
+        },
+      })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((res) => {
+          alert(res.message);
+        });
+    })();
+  };
+
   return (
     <div
       className="contentmain hidden dark:bg-blk transition-all rounded-d"
@@ -85,6 +112,13 @@ function Bookings() {
           </form>
         </div>
       </div> */}
+
+      <button
+        onClick={createbooking}
+        className="p-2 cbooking ml-auto flex bg-blue-700"
+      >
+        +Create New Booking
+      </button>
 
       <div className="tablediv">
         <h2 className="mb-5 font-bold"> Bookings </h2>

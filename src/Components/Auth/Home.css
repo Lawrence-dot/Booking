@@ -109,6 +109,13 @@ span {
   padding: 11px;
 }
 
+.cbooking {
+  background-color: rgb(42, 132, 192);
+  color: white;
+  font-family: rubik;
+  border-radius: 7px;
+}
+
 .signinbtn {
   font-weight: 700;
   transition: all .5s ease;

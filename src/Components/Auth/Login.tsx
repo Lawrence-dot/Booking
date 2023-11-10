@@ -19,7 +19,7 @@ import {
   InputLabel,
 } from "@mui/material";
 import { savetoken } from "../Auth/TokenSlice";
-import { TbLock, TbMail } from "react-icons/tb";
+import { TbLoaderQuarter, TbLock, TbMail } from "react-icons/tb";
 import { AppContext } from "../../Container/App";
 
 function Login() {
@@ -73,7 +73,6 @@ function Login() {
         })
           .then(async (res) => {
             const ress = await res.json();
-
             if (ress.non_field_errors) {
               alert("Invalid Credentials Provided");
             } else {
@@ -85,8 +84,8 @@ function Login() {
                 },
               });
               dispatch(savetoken(ress.token));
-              setloading(false);
             }
+            setloading(false);
           })
           .catch((err) => {
             alert(err);
@@ -160,124 +159,20 @@ function Login() {
           />
         </FormControl>
 
-        <button
-          className="bg-blue-700 my-3 rounded-md text-white p-2"
-          onClick={signin}
-        >
-          {" "}
-          Log in{" "}
-        </button>
-      </div>
-
-      {/* <form
-        method="post"
-        action="https://vistor-booking.onrender.com/api/login/"
-      >
-        <div className="login-box my-3">
-          <FormControl>
-            <InputLabel className="flex flex-row" htmlFor="email-ref">
-              <div className="flex">
-                {" "}
-                <TbMail className="mr-1" size={"22px"} />
-                Email
-              </div>
-            </InputLabel>
-            <OutlinedInput
-              error={mailerror ? true : false}
-              id="email-ref"
-              type={"text"}
-              label="Emailedd"
-              className="rounded-md"
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  ></IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-        </div>
-
-        <div className="login-box my-3">
-          <FormControl variant="outlined">
-            <InputLabel
-              className="flex flex-row"
-              htmlFor="outlined-adornment-password"
-            >
-              <div className="flex">
-                {" "}
-                <TbLock className="mr-1" size={"22px"} />
-                Password
-              </div>
-            </InputLabel>
-            <OutlinedInput
-              error={passerror ? true : false}
-              id="pass-ref"
-              type={showPassword ? "text" : "password"}
-              className="rounded-md"
-              label="Paswordddd."
-              onClick={() => setpasserror(false)}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-        </div>
-
-        <div className="flex flex-row mt-2 mb-3">
-          <input type="checkbox" name="" id="" />
-          <p className="ml-1 cursor-pointer"> Remember Me </p>
-          <p className="ml-auto cursor-pointer"> Forgot Password </p>
-        </div>
-
-        <div className="flex signinc my-3">
+        {loading ? (
+          <span className="block mx-auto MY-2">
+            <TbLoaderQuarter />{" "}
+          </span>
+        ) : (
           <button
+            className="bg-blue-700 my-3 rounded-md text-white p-2 hover:bg-blue-600"
             onClick={signin}
-            className={`bg-black w-full flex justify-center ${
-              loaded && "bg-white"
-            } signinbtn rounded-md mb-3 text-sm text-white py-2 hover:bg-white border-2 hover:text-black border-black`}
           >
-            Sign In
-            <span className="signarrow">
-              {" "}
-              <BsArrowRight className="mt-1 ml-1 font-bold" />{" "}
-            </span>
+            {" "}
+            Log in{" "}
           </button>
-          <hr />
-        </div>
-
-        <div className="loginsocials mb-5">
-          <div className="flex">
-            <div className="w-1/3">
-              <hr className="mt-2" />
-            </div>
-            <div className="w-1/3 connectus">connect with us</div>
-            <div className="w-1/3">
-              <hr className="mt-2" />
-            </div>
-          </div>
-          <div className="flex login-socialicons">
-            <Facebook />
-            <Twitter />
-            <Instagram />
-            <WhatsApp />
-            <YouTube />
-          </div>
-        </div>
-      </form> */}
+        )}
+      </div>
 
       <div className="loginsocials mt-3 mb-5">
         <div className="flex">
