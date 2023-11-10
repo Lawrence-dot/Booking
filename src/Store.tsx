@@ -1,12 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import loginReducer from "./LoginSlice";
+import tokenReducer from "../src/Components/Auth/TokenSlice";
 
 export const store = configureStore({
   reducer: {
     login: loginReducer,
+    token: tokenReducer,
   },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;

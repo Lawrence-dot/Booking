@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect } from "react";
+import React, { createContext, useContext } from "react";
 import { bartype, dataType, navtype } from "../../Interfaces/interfaces";
 import { AppContext } from "../../Container/App";
 import { Apptype } from "../../Interfaces/interfaces";
@@ -10,12 +10,14 @@ import {
   DarkMode,
   Logout,
   Settings,
-  Person,
   Person2,
+  Person3,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../LoginSlice";
+import axios from "axios";
+import { RootState } from "../../Store";
 
 export const classNames: string[] = ["bookings", "dashboard", "withdraw"];
 
@@ -24,13 +26,17 @@ interface Props {
   datas: dataType;
   Pending?: Number;
   admin?: boolean;
+  token?: any;
+  is_admin?: boolean;
+  is_staff?: boolean;
+  is_security?: boolean;
 }
 
 export const NavbarContext = createContext<bartype | null>(null);
 
 function Navbar(props: Props) {
   const navcontext = useContext<navtype | null>(navContext);
-
+  const token = useSelector((state: RootState) => state.token.value);
   const Login = useContext<Apptype | null>(AppContext);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -56,15 +62,31 @@ function Navbar(props: Props) {
     window.innerWidth < 640 && navcontext?.setOpen(false);
   };
 
-  useEffect(() => {
-    console.log(props);
-  });
+  const lgout = (token: any) => {
+    axios
+      .post(
+        "https://vistor-booking.onrender.com/api/logout/",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
 
   const signout = () => {
     ShowModal({
       title: "Are you sure you want to logout ?",
       type: "yesno",
       function: () => {
+        lgout(token);
         dispatch(logout());
         navigate("/");
       },
@@ -120,7 +142,20 @@ function Navbar(props: Props) {
                 <span className="ml-3  navtext"> My Dashboard</span>
               </div>
 
-              {props.type === "user" && (
+              {props.is_staff && (
+                <div
+                  id="bookings"
+                  onClick={() => switchNav("bookings")}
+                  className="navli text-black dark:text-white  cursor-pointer hover:border-white  py-2  text-md font-thin font-sans rounded-md flex"
+                >
+                  <span>
+                    <Person3 />
+                  </span>
+                  <span className="ml-3  navtext"> Book A Visitor </span>
+                </div>
+              )}
+
+              {/* {props.is_staff && (
                 <div
                   id="bookings"
                   onClick={() => switchNav("bookings")}
@@ -131,9 +166,9 @@ function Navbar(props: Props) {
                   </span>
                   <span className="ml-3  navtext"> Check Bookings </span>
                 </div>
-              )}
+              )} */}
 
-              {props.admin && (
+              {props.is_admin && (
                 <div
                   id="users"
                   onClick={() => switchNav("users")}
@@ -146,7 +181,7 @@ function Navbar(props: Props) {
                 </div>
               )}
 
-              {props.type === "security" && (
+              {props.is_security && (
                 <div
                   id="logs"
                   onClick={() => switchNav("logs")}

@@ -1,4 +1,4 @@
-import React, { useState, createContext } from "react";
+import React, { useState, createContext, useEffect } from "react";
 import { dataType, history } from "../../Interfaces/interfaces";
 
 import Tabs from "../Pages/Tabs";
@@ -31,6 +31,7 @@ function Main(props: Props) {
   const [history] = useState<history[]>([]);
   const [crddetails, setcrddetails] = useState<crdinfo | null>(null);
   const [pendingtrans] = useState<Number>(0);
+  const [usertype, setusertype] = useState<dataType>();
 
   var months = [
     "Jan",
@@ -45,6 +46,7 @@ function Main(props: Props) {
     "Nov",
     "Dec",
   ];
+
   var d = new Date();
 
   const getdateinfo = () => {
@@ -61,6 +63,9 @@ function Main(props: Props) {
     }
   };
 
+  useEffect(() => {
+    setusertype(props.datas);
+  });
   return (
     <MainContext.Provider
       value={{
@@ -113,11 +118,11 @@ function Main(props: Props) {
           </div>
         </div>
 
-        <Bookings />
+        {usertype?.is_staff && <Bookings />}
 
-        <Logs />
+        {usertype?.is_security && <Logs />}
 
-        <Users />
+        {usertype?.is_admin && <Users />}
       </div>
     </MainContext.Provider>
   );

@@ -1,5 +1,7 @@
 import axios from "axios";
 import React, { RefObject, useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../Store";
 
 export interface userinfo {
   email: string;
@@ -10,12 +12,16 @@ export interface userinfo {
 }
 
 function Users() {
+  const token = useSelector((state: RootState) => state.token.value);
   const [users, setusers] = useState<userinfo[]>([]);
   const userref: RefObject<HTMLInputElement> | null = useRef(null);
   useEffect(() => {
     axios({
       method: "get",
       url: "https://vistor-booking.onrender.com/api/user/",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((res) => {
         setusers(res.data);
@@ -25,18 +31,44 @@ function Users() {
       });
   });
 
-  var filtered: userinfo[] = [];
+  const [filtered, setfiltered] = useState<userinfo[]>([]);
 
   const searchusers = () => {
+    console.log(userref!.current!.value.replace(/[ ]/g, "").length);
+
     if (userref!.current!.value.replace(/[ ]/g, "").length > 0) {
-      filtered = users.filter((each) => {
-        return (
-          userref!.current!.value === each.email ||
-          userref!.current!.value === each.last_name ||
-          userref!.current!.value === each.first_name ||
-          userref!.current!.value === each.middle_name
-        );
-      });
+      setfiltered(
+        users.filter((each) => {
+          console.log(
+            userref!.current!.value.replace(/[ ]/g, "").toLowerCase(),
+            each.email.toLowerCase()
+          );
+          return (
+            each.email
+              .toLowerCase()
+              .includes(
+                userref!.current!.value.replace(/[ ]/g, "").toLowerCase()
+              ) ||
+            each.last_name
+              .toLowerCase()
+              .includes(
+                userref!.current!.value.replace(/[ ]/g, "").toLowerCase()
+              ) ||
+            each.first_name
+              .toLowerCase()
+              .includes(
+                userref!.current!.value.replace(/[ ]/g, "").toLowerCase()
+              ) ||
+            each.middle_name
+              .toLowerCase()
+              .includes(
+                userref!.current!.value.replace(/[ ]/g, "").toLowerCase()
+              )
+          );
+        })
+      );
+
+      console.log(filtered);
     }
   };
 
@@ -56,18 +88,20 @@ function Users() {
         />
         <table className="visitor">
           <thead>
-            <th>S/N</th>
-            <th>Email</th>
-            <th>First Name</th>
-            <th>Middle Name </th>
-            <th>Last Name</th>
-            <th>Username </th>
+            <tr>
+              <th>S/N</th>
+              <th>Email</th>
+              <th>First Name</th>
+              <th>Middle Name </th>
+              <th>Last Name</th>
+              <th>Username </th>
+            </tr>
           </thead>
           <tbody>
             {filtered.length > 0
               ? filtered.map((each, index) => {
                   return (
-                    <tr>
+                    <tr key={index}>
                       <td> {index + 1} </td>
                       <td>{each.email}</td>
                       <td>{each.first_name}</td>
@@ -79,7 +113,7 @@ function Users() {
                 })
               : users.map((each, index) => {
                   return (
-                    <tr>
+                    <tr key={index}>
                       <td> {index + 1} </td>
                       <td>{each.email}</td>
                       <td>{each.first_name}</td>

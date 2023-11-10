@@ -1,6 +1,9 @@
 import { Delete, Edit } from "@mui/icons-material";
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { booking } from "../../Interfaces/interfaces";
+import { RootState } from "../../Store";
 
 function Bookings() {
   const [bookings] = useState<booking[]>([
@@ -24,6 +27,25 @@ function Bookings() {
     },
   ]);
 
+  const token = useSelector((state: RootState) => state.token.value);
+
+  useEffect(() => {
+    (async () => {
+      await axios
+        .get("https://vistor-booking.onrender.com/api/list-create-booking/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((res) => {
+          alert(res.message);
+        });
+    })();
+  });
+
   const editbooking = (id?: string) => {
     document.getElementById("editbooking")?.classList.toggle("hidden");
   };
@@ -33,7 +55,7 @@ function Bookings() {
       className="contentmain hidden dark:bg-blk transition-all rounded-d"
       id="bookings"
     >
-      <div className="editbookings hidden" id="editbooking">
+      {/* <div className="editbookings hidden" id="editbooking">
         <div className="editcontent py-3 px-4">
           <span
             className="w-8 block font-bold text-red-700 ml-auto"
@@ -62,17 +84,20 @@ function Bookings() {
             </button>
           </form>
         </div>
-      </div>
+      </div> */}
 
       <div className="tablediv">
         <h2 className="mb-5 font-bold"> Bookings </h2>
         <table className="visitor">
           <thead>
-            <td>S/N</td>
-            <td>Visitors Name</td>
-            <td>Booking Date </td>
-            <td>Booking Time</td>
-            <td></td>
+            <tr>
+              {" "}
+              <td>S/N</td>
+              <td>Visitors Name</td>
+              <td>Booking Date </td>
+              <td>Booking Time</td>
+              <td></td>
+            </tr>
           </thead>
           <tbody>
             {bookings.map((each, index) => {

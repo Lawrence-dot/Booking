@@ -18,13 +18,18 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
+import { savetoken } from "../Auth/TokenSlice";
 import { TbLock, TbMail } from "react-icons/tb";
+import { AppContext } from "../../Container/App";
 
 function Login() {
   const navigate: NavigateFunction = useNavigate();
   const login = useContext<HomeType | null>(HomeContext);
+  const [loading, setloading] = useState<boolean>(false);
   const [mail, setmail] = useState<HTMLInputElement>();
   const [pass, setpass] = useState<HTMLInputElement>();
+  const appcontext = useContext(AppContext);
+  // var token: any;
   const dispatch = useDispatch();
   const logusers = () => {
     dispatch(loguser());
@@ -52,8 +57,8 @@ function Login() {
   }, []);
 
   const signin = async () => {
-    logusers();
     if (mail?.value && pass?.value) {
+      setloading(true);
       (async () => {
         await fetch("https://vistor-booking.onrender.com/api/login/", {
           method: "POST",
@@ -68,15 +73,24 @@ function Login() {
         })
           .then(async (res) => {
             const ress = await res.json();
-            console.log(ress);
-            navigate("/dashBoard", {
-              state: {
-                data: ress,
-              },
-            });
+
+            if (ress.non_field_errors) {
+              alert("Invalid Credentials Provided");
+            } else {
+              appcontext?.showPreloader();
+              logusers();
+              navigate("/dashBoard", {
+                state: {
+                  data: ress,
+                },
+              });
+              dispatch(savetoken(ress.token));
+              setloading(false);
+            }
           })
           .catch((err) => {
-            console.log(err.message);
+            alert(err);
+            setloading(false);
           });
       })();
     }

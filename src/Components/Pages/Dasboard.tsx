@@ -17,8 +17,8 @@ function Dasboard() {
   const maincontext = useContext<mainType | null>(MainContext);
 
   useEffect(() => {
-    setdatas(location.state.datas);
-  }, [location.state.datas]);
+    setdatas(location?.state?.data);
+  }, [location]);
 
   return (
     <navContext.Provider
@@ -34,6 +34,10 @@ function Dasboard() {
             datas={location.state.data}
             type="security"
             admin={true}
+            token={datas?.token}
+            is_admin={datas?.is_admin}
+            is_staff={datas?.is_staff}
+            is_security={datas?.is_admin}
           />
         </div>
 

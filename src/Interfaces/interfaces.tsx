@@ -1,8 +1,12 @@
-export interface dataType {
+export type dataType = {
   email: string;
   token: string;
   user_id: string;
-}
+  is_staff?: boolean;
+  is_admin?: boolean;
+  is_security?: boolean;
+  username?: string;
+};
 
 export interface account {
   type: string;
