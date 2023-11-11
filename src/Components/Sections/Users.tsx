@@ -27,9 +27,25 @@ function Users() {
         setusers(res.data);
       })
       .catch(function (response) {
-        console.log(response.message);
+        alert(response.message);
       });
   });
+
+  // const createUser = () => {
+  //   axios({
+  //     method: "get",
+  //     url: "https://vistor-booking.onrender.com/api/user/",
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   })
+  //     .then((res) => {
+  //       setusers(res.data);
+  //     })
+  //     .catch(function (response) {
+  //       console.log(response.message);
+  //     });
+  // };
 
   const [filtered, setfiltered] = useState<userinfo[]>([]);
 
@@ -72,6 +88,8 @@ function Users() {
     }
   };
 
+  const editUser = (id: any) => {};
+
   return (
     <div
       className="contentmain hidden dark:bg-blk transition-all rounded-d"
@@ -95,6 +113,7 @@ function Users() {
               <th>Middle Name </th>
               <th>Last Name</th>
               <th>Username </th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -120,6 +139,12 @@ function Users() {
                       <td>{each.middle_name}</td>
                       <td>{each.last_name}</td>
                       <td>{each.username}</td>
+                      <td>
+                        <div className="flex flex-row">
+                          <span onClick={() => editUser(1)}>Edit</span>
+                          <span>Delete</span>
+                        </div>
+                      </td>
                     </tr>
                   );
                 })}

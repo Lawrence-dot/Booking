@@ -2,7 +2,9 @@ import React, { useState, createContext, useEffect } from "react";
 import { dataType, history } from "../../Interfaces/interfaces";
 
 import Tabs from "../Pages/Tabs";
+import Addbooking from "../Sections/Addbooking";
 import Bookings from "../Sections/Bookings";
+import Createuser from "../Sections/Createuser";
 import Logs from "../Sections/Logs";
 import Users from "../Sections/Users";
 
@@ -65,7 +67,7 @@ function Main(props: Props) {
 
   useEffect(() => {
     setusertype(props.datas);
-  });
+  }, [props]);
   return (
     <MainContext.Provider
       value={{
@@ -123,6 +125,10 @@ function Main(props: Props) {
         {usertype?.is_security && <Logs />}
 
         {usertype?.is_admin && <Users />}
+
+        {usertype?.is_staff && <Addbooking />}
+
+        {usertype?.is_admin && <Createuser />}
       </div>
     </MainContext.Provider>
   );

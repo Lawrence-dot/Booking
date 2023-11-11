@@ -12,6 +12,7 @@ import {
   Settings,
   Person2,
   Person3,
+  PlusOneTwoTone,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,7 +24,7 @@ export const classNames: string[] = ["bookings", "dashboard", "withdraw"];
 
 interface Props {
   type: "security" | "user";
-  datas: dataType;
+  datas: dataType | undefined;
   Pending?: Number;
   admin?: boolean;
   token?: any;
@@ -151,22 +152,35 @@ function Navbar(props: Props) {
                   <span>
                     <Person3 />
                   </span>
-                  <span className="ml-3  navtext"> Book A Visitor </span>
+                  <span className="ml-3  navtext"> View Bookings </span>
                 </div>
               )}
 
-              {/* {props.is_staff && (
+              {props.is_staff && (
                 <div
-                  id="bookings"
-                  onClick={() => switchNav("bookings")}
+                  id="addbooking"
+                  onClick={() => switchNav("addbooking")}
                   className="navli text-black dark:text-white  cursor-pointer hover:border-white  py-2  text-md font-thin font-sans rounded-md flex"
                 >
                   <span>
-                    <Person />
+                    <PlusOneTwoTone />
                   </span>
-                  <span className="ml-3  navtext"> Check Bookings </span>
+                  <span className="ml-3  navtext"> Add a new Booking </span>
                 </div>
-              )} */}
+              )}
+
+              {props.is_admin && (
+                <div
+                  id="createuser"
+                  onClick={() => switchNav("createuser")}
+                  className="navli text-black dark:text-white  cursor-pointer hover:border-white  py-2  text-md font-thin font-sans rounded-md flex"
+                >
+                  <span>
+                    <PlusOneTwoTone />
+                  </span>
+                  <span className="ml-3  navtext"> Create a User </span>
+                </div>
+              )}
 
               {props.is_admin && (
                 <div

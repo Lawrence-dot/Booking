@@ -12,7 +12,7 @@ export const navContext = createContext<navtype | null>(null);
 
 function Dasboard() {
   const location = useLocation();
-  const [datas, setdatas] = useState<dataType>();
+  const [datas, setdatas] = useState<dataType | undefined>();
   const [open, setOpen] = useState<boolean>(false);
   const maincontext = useContext<mainType | null>(MainContext);
 
@@ -31,7 +31,7 @@ function Dasboard() {
         <div className="navs w-60 md:w-72">
           <Navbar
             Pending={maincontext?.pendingtrans}
-            datas={location.state.data}
+            datas={datas}
             type="security"
             admin={true}
             token={datas?.token}

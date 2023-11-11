@@ -92,6 +92,8 @@ function Login() {
             setloading(false);
           });
       })();
+    } else {
+      alert("Please Fill all input fields");
     }
   };
 
