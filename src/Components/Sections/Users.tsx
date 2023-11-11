@@ -9,12 +9,14 @@ export interface userinfo {
   last_name: string;
   middle_name: string;
   username: string;
+  slug: string;
 }
 
 function Users() {
   const token = useSelector((state: RootState) => state.token.value);
   const [users, setusers] = useState<userinfo[]>([]);
   const userref: RefObject<HTMLInputElement> | null = useRef(null);
+
   useEffect(() => {
     axios({
       method: "get",
@@ -26,7 +28,7 @@ function Users() {
       .then((res) => {
         setusers(res.data);
       })
-      .catch(function (response) {
+      .catch((response) => {
         alert(response.message);
       });
   });
@@ -55,10 +57,6 @@ function Users() {
     if (userref!.current!.value.replace(/[ ]/g, "").length > 0) {
       setfiltered(
         users.filter((each) => {
-          console.log(
-            userref!.current!.value.replace(/[ ]/g, "").toLowerCase(),
-            each.email.toLowerCase()
-          );
           return (
             each.email
               .toLowerCase()
@@ -83,12 +81,33 @@ function Users() {
           );
         })
       );
-
-      console.log(filtered);
     }
   };
 
-  const editUser = (id: any) => {};
+  const editUser = (slug: string) => {
+    axios({
+      method: "patch",
+      url: `https://vistor-booking.onrender.com/api/${slug}/user/`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        first_name: "string12",
+        last_name: "22",
+        middle_name: "string",
+        username: "strijjjng",
+        email: "usker@example.com",
+        password: "string",
+        password2: "string",
+      },
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((response) => {
+        console.log(response.message);
+      });
+  };
 
   return (
     <div
@@ -141,8 +160,13 @@ function Users() {
                       <td>{each.username}</td>
                       <td>
                         <div className="flex flex-row">
-                          <span onClick={() => editUser(1)}>Edit</span>
-                          <span>Delete</span>
+                          <span
+                            className="mr-2 text-blue-700"
+                            onClick={() => editUser(each.slug)}
+                          >
+                            Edit
+                          </span>
+                          <span className="text-red-700">Delete</span>
                         </div>
                       </td>
                     </tr>

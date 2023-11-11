@@ -1,11 +1,11 @@
 import React, { useEffect, createContext, useState } from "react";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Dasboard from "../Components/Pages/Dasboard";
 import Home from "../Components/Auth/Home";
 import { Apptype } from "../Interfaces/interfaces";
 import { useSelector } from "react-redux";
 import { RootState } from "../Store";
+import Dashroute from "../Components/Pages/Dashroute";
 
 export const AppContext = createContext<Apptype | null>(null);
 
@@ -62,10 +62,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route
-              path="/dashBoard"
-              element={isloggedin ? <Dasboard /> : <Home />}
-            />
+            <Route path="/dashBoard" element={<Dashroute />} />
           </Routes>
         </BrowserRouter>
       </div>
